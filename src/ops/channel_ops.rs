@@ -1,9 +1,9 @@
 extern crate bot_v2_backend;
 extern crate diesel;
 
-use self::bot_v2_backend::*;
-use self::models::*;
 use self::diesel::prelude::*;
+use bot_v2_backend::establish_connection;
+use bot_v2_backend::models::ChannelEntity;
 
 pub fn show_channels() {
     use bot_v2_backend::schema::channel::dsl::*;
