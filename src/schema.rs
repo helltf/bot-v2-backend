@@ -7,10 +7,12 @@ table! {
     }
 }
 
+
 table! {
     channel (id) {
         id -> Int4,
-        channel -> Varchar,
+        #[sql_name = "channel"]
+        channelName -> Varchar,
         allowed -> Bool,
         allowed_live -> Bool,
         joined -> Bool,
@@ -65,7 +67,8 @@ table! {
 table! {
     suggestion (id) {
         id -> Int4,
-        suggestion -> Varchar,
+        #[sql_name = "suggestion"]
+        suggestion_entry -> Varchar,
         date -> Int8,
         userId -> Nullable<Int4>,
     }
