@@ -1,10 +1,14 @@
 [package]
-name = "bot-v2-backend"
+name = "hello-rocket"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-diesel = { version = "1.4.4", features = ["postgres"] }
+serde = { version = "1.0.136", features = ["derive"] }
+rocket = { version = "0.5.0-rc.1", features= ["json"] }
+diesel = { version = "1.4.4", features = ["postgres", "serde_json"] }
+serde_json = { version = "1.0.48", features = ["preserve_order"]}
 dotenv = "0.15.0"
+diesel_migrations = "1.4.0"

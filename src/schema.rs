@@ -7,12 +7,11 @@ table! {
     }
 }
 
-
 table! {
     channel (id) {
         id -> Int4,
         #[sql_name = "channel"]
-        channelName -> Varchar,
+        channel_name -> Varchar,
         allowed -> Bool,
         allowed_live -> Bool,
         joined -> Bool,
@@ -27,6 +26,7 @@ table! {
         history -> Array<Varchar>,
         change_timestamp -> Int8,
         register_timestamp -> Int8,
+        userId -> Nullable<Int4>,
     }
 }
 
@@ -36,9 +36,38 @@ table! {
         counter -> Int4,
         permissions -> Int4,
         description -> Varchar,
-        requiredParams -> Array<Varchar>,
-        optionalParams -> Array<Varchar>,
+        requiredParams -> Array<Text>,
+        optionalParams -> Array<Text>,
         cooldown -> Int4,
+        deleted -> Bool,
+        alias -> Nullable<Array<Varchar>>,
+    }
+}
+
+table! {
+    emotegame_stats (id) {
+        id -> Int4,
+        incorrect_guesses -> Int4,
+        letters_guessed -> Int4,
+        emotes_guessed -> Int4,
+        userId -> Nullable<Int4>,
+    }
+}
+
+table! {
+    error (id) {
+        id -> Int4,
+        message -> Nullable<Varchar>,
+        stack_trace -> Nullable<Varchar>,
+        timestamp -> Int8,
+    }
+}
+
+table! {
+    migrations (id) {
+        id -> Int4,
+        timestamp -> Int8,
+        name -> Varchar,
     }
 }
 
@@ -68,7 +97,7 @@ table! {
     suggestion (id) {
         id -> Int4,
         #[sql_name = "suggestion"]
-        suggestion_entry -> Varchar,
+        suggestion_info -> Varchar,
         date -> Int8,
         userId -> Nullable<Int4>,
     }
@@ -92,14 +121,6 @@ table! {
         permission -> Int4,
         registered_at -> Int8,
         display_name -> Varchar,
-        colorsId -> Nullable<Int4>,
-    }
-}
-
-table! {
-    watchchannel (channel) {
-        channel -> Varchar,
-        joined_date -> Int8,
     }
 }
 
@@ -110,20 +131,23 @@ table! {
     }
 }
 
+joinable!(color_history -> user (userId));
+joinable!(emotegame_stats -> user (userId));
 joinable!(notification -> user (userId));
 joinable!(suggestion -> user (userId));
-joinable!(user -> color_history (colorsId));
 
 allow_tables_to_appear_in_same_query!(
     ban,
     channel,
     color_history,
     command,
+    emotegame_stats,
+    error,
+    migrations,
     notification,
     notification_channel,
     suggestion,
     timeout,
     user,
-    watchchannel,
     wordle_words,
 );
