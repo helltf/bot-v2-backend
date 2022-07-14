@@ -12,7 +12,7 @@ mod schema;
 use rocket::serde::json::Json;
 
 #[get("/commands")]
-fn get_commands() -> Json<Vec<models::WordleWord>> {
+fn get_commands() -> Json<Vec<models::CommandEntity>> {
     Json(commands_service::get_commands())
 }
 

@@ -10,11 +10,12 @@ pub struct CommandEntity {
     pub name: String,
     pub counter: i32,
     pub permissions: i32,
+    pub description: String,
     pub requiredParams: Vec<String>,
     pub optionalParams: Vec<String>,
     pub cooldown: i32,
     pub deleted: bool,
-    pub alias: Vec<String>,
+    pub alias: Option<Vec<String>>,
 }
 
 #[derive(Queryable, Insertable, Serialize, Deserialize)]
