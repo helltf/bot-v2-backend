@@ -36,8 +36,10 @@ table! {
         counter -> Int4,
         permissions -> Int4,
         description -> Varchar,
-        requiredParams -> Array<Text>,
-        optionalParams -> Array<Text>,
+        #[sql_name = "requiredParams"]
+        required_params -> Array<Text>,
+        #[sql_name = "optionalParams"]
+        optional_params -> Array<Text>,
         cooldown -> Int4,
         deleted -> Bool,
         alias -> Nullable<Array<Varchar>>,
@@ -80,7 +82,8 @@ table! {
         offline -> Bool,
         title -> Bool,
         game -> Bool,
-        userId -> Nullable<Int4>,
+        #[sql_name = "userId"]
+        user_id -> Nullable<Int4>,
     }
 }
 
@@ -131,10 +134,20 @@ table! {
     }
 }
 
+table! {
+    twitch_tokens (id) {
+        id -> Int4,
+        token -> Varchar,
+        #[sql_name = "userId"]
+        user_id -> Nullable<Int4>,
+    }
+}
+
 joinable!(color_history -> user (userId));
 joinable!(emotegame_stats -> user (userId));
-joinable!(notification -> user (userId));
+joinable!(notification -> user (user_id));
 joinable!(suggestion -> user (userId));
+joinable!(twitch_tokens -> user (user_id));
 
 allow_tables_to_appear_in_same_query!(
     ban,
@@ -148,6 +161,7 @@ allow_tables_to_appear_in_same_query!(
     notification_channel,
     suggestion,
     timeout,
+    twitch_tokens,
     user,
     wordle_words,
 );
