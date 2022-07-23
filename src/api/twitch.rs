@@ -1,7 +1,39 @@
-use crate::reqwest;
+use std::{collections::HashMap, fmt::format, str::FromStr};
 
-pub async fn get_twitch_id(token: String) -> i32 {
-    let mut res = reqwest::get("http://httpbin.org/get").await;
-    print!("{:?}", res.json());
-    return 1;
+use reqwest::header::{HeaderMap, HeaderValue};
+use rocket::http::uri::fmt::FromUriParam;
+use serde::Deserialize;
+
+use crate::{reqwest, schema::ban::user};
+
+pub async fn get_twitch_id(token: String) -> String {
+    let client = reqwest::Client::new();
+
+    let mut res = client
+        .get("https://id.twitch.tv/oauth2/validate")
+        .headers(get_headers(token))
+        .send()
+        .await
+        .expect("Error while requesting twitch");
+
+    let user_data = res
+        .json::<TwitchUserData>()
+        .await
+        .expect("error parsing json");
+
+    return user_data.client_id;
+}
+#[derive(Debug, Deserialize)]
+pub struct TwitchUserData {
+    pub client_id: String,
+    pub login: String,
+    pub scopes: Vec<String>,
+    pub user_id: String,
+    pub expires_in: i32,
+}
+
+fn get_headers(token: String) -> HeaderMap {
+    let mut headers = HeaderMap::new();
+    headers.insert("Authorization", format!("OAuth {token}").parse().unwrap());
+    return headers;
 }
