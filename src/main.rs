@@ -22,13 +22,13 @@ struct AccessToken {
 }
 
 #[get("/commands")]
-async fn get_commands() -> Json<Vec<models::CommandEntity>> {
-    let a = api::twitch::get_twitch_id("abc".to_string()).await;
+fn get_commands() -> Json<Vec<models::CommandEntity>> {
     Json(commands_service::get_commands())
 }
 
 #[post("/token", format = "json", data = "<access_token>")]
-fn post_token(access_token: Json<AccessToken>) -> Json<bool> {
+async fn post_token(access_token: Json<AccessToken>) -> Json<bool> {
+    let a = api::twitch::get_twitch_id(access_token.token.to_owned()).await;
     return Json(true);
 }
 #[options("/<_..>")]
