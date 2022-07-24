@@ -1,13 +1,13 @@
-use diesel::RunQueryDsl;
+use crate::schema::twitch_tokens::dsl::*;
+use crate::{db, models::TwitchTokenEntity};
+use diesel::prelude::*;
 
-use crate::{db, models::TwitchTokenEntity, schema::twitch_tokens};
-
-pub fn save_token(token: String) -> bool {
+pub fn save_token(access_token: String, refresh_token: String, twitch_id: String) -> () {
     let connection = db::create_connection();
-
-    // let words = diesel::insert_into(twitch_tokens).values(records)
-    //     .execute(&connection)
-    //     .expect("Error saving token");
-
-    return true;
+    let result = diesel::insert_into(twitch_tokens)
+        .values((
+            token.eq_all(access_token),
+            user_id.eq_all(twitch_id.parse::<i32>().unwrap()),
+        ))
+        .execute(&connection);
 }

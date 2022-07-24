@@ -12,13 +12,14 @@ mod models;
 mod schema;
 mod services;
 use cors::CORS;
-use rocket::{http::Status, response::status, serde::json::Json};
+use rocket::serde::json::Json;
 use serde::Deserialize;
-use services::commands_service;
+use services::{commands_service, token_service::save_token};
 
 #[derive(Debug, PartialEq, Eq, Deserialize)]
-struct AccessToken {
+pub struct TokenData {
     pub token: String,
+    pub refresh_token: String,
 }
 
 #[get("/commands")]
@@ -26,9 +27,11 @@ fn get_commands() -> Json<Vec<models::CommandEntity>> {
     Json(commands_service::get_commands())
 }
 
-#[post("/token", format = "json", data = "<access_token>")]
-async fn post_token(access_token: Json<AccessToken>) -> Json<bool> {
-    let a = api::twitch::get_twitch_id(access_token.token.to_owned()).await;
+#[post("/token", format = "json", data = "<data>")]
+async fn post_token(data: Json<TokenData>) -> Json<bool> {
+    let id = api::twitch::get_twitch_id(data.token.to_owned()).await;
+    save_token(data.token.to_owned(), data.refresh_token.to_owned(), id);
+
     return Json(true);
 }
 #[options("/<_..>")]
