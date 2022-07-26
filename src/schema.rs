@@ -137,7 +137,8 @@ table! {
 table! {
     twitch_tokens (id) {
         id -> Int4,
-        token -> Varchar,
+        nonce -> Bytea,
+        token -> Bytea,
         #[sql_name = "userId"]
         user_id -> Nullable<Int4>,
     }

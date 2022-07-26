@@ -4,6 +4,7 @@ extern crate rocket;
 #[macro_use]
 extern crate diesel;
 extern crate reqwest;
+extern crate sodiumoxide;
 
 mod api;
 mod cors;
@@ -20,6 +21,13 @@ use services::{commands_service, token_service::save_token};
 pub struct TokenData {
     pub token: String,
     pub refresh_token: String,
+}
+
+pub fn bytes_to_vec(b: &[u8]) -> Vec<u8> {
+    let mut out = Vec::with_capacity(b.len());
+
+    out.extend_from_slice(b);
+    out
 }
 
 #[get("/commands")]

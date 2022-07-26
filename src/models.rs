@@ -29,6 +29,7 @@ pub struct WordleWord {
 #[table_name = "twitch_tokens"]
 pub struct TwitchTokenEntity {
     pub id: i32,
-    pub token: String,
+    pub token: Vec<u8>,
+    pub nonce: Vec<u8>,
     pub user_id: Option<i32>,
 }
