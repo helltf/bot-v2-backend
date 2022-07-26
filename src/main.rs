@@ -3,6 +3,7 @@ extern crate rocket;
 
 #[macro_use]
 extern crate diesel;
+extern crate dotenv;
 extern crate reqwest;
 extern crate sodiumoxide;
 
