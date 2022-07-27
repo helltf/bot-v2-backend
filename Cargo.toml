@@ -1,5 +1,5 @@
 [package]
-name = "hello-rocket"
+name = "helltfbot-v2-backend"
 version = "0.1.0"
 edition = "2021"
 
@@ -12,3 +12,5 @@ diesel = { version = "1.4.4", features = ["postgres", "serde_json"] }
 serde_json = { version = "1.0.48", features = ["preserve_order"]}
 dotenv = "0.15.0"
 diesel_migrations = "1.4.0"
+reqwest = { version = "0.11", features = ["json"] }
+sodiumoxide = "0.2.7"
