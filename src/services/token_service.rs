@@ -18,6 +18,7 @@ pub fn save_token(access_token: String, save_refresh_token: String, twitch_id: S
             token.eq_all(boxed_at),
             user_id.eq_all(twitch_id.parse::<i32>().unwrap()),
             nonce.eq_all(crate::bytes_to_vec(&box_nonce.0)),
+            refresh_token.eq_all(save_refresh_token),
         ))
         .execute(&connection);
 }

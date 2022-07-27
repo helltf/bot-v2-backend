@@ -32,4 +32,5 @@ pub struct TwitchTokenEntity {
     pub token: Vec<u8>,
     pub nonce: Vec<u8>,
     pub user_id: Option<i32>,
+    pub refresh_token: String,
 }

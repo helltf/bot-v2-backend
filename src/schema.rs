@@ -139,6 +139,7 @@ table! {
         id -> Int4,
         nonce -> Bytea,
         token -> Bytea,
+        refresh_token -> Varchar,
         #[sql_name = "userId"]
         user_id -> Nullable<Int4>,
     }
