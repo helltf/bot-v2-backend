@@ -31,10 +31,6 @@ pub fn bytes_to_vec(b: &[u8]) -> Vec<u8> {
     out
 }
 
-#[get("/commands")]
-fn get_commands() -> Json<Vec<models::CommandEntity>> {
-    Json(commands_service::get_commands())
-}
 
 #[post("/token", format = "json", data = "<data>")]
 async fn post_token(data: Json<TokenData>) -> Json<bool> {
