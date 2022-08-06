@@ -1,4 +1,5 @@
 use crate::schema::twitch_tokens::dsl::*;
+use crate::util::utils::bytes_to_vec;
 use crate::{db, models::TwitchTokenEntity};
 use diesel::prelude::*;
 use dotenv;
@@ -17,7 +18,7 @@ pub fn save_token(access_token: String, save_refresh_token: String, twitch_id: S
         .values((
             token.eq_all(boxed_at),
             user_id.eq_all(twitch_id.parse::<i32>().unwrap()),
-            nonce.eq_all(crate::bytes_to_vec(&box_nonce.0)),
+            nonce.eq_all(bytes_to_vec(&box_nonce.0)),
             refresh_token.eq_all(save_refresh_token),
         ))
         .execute(&connection);
