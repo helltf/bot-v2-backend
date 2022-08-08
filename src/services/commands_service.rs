@@ -35,3 +35,15 @@ pub fn get_command_names() -> Vec<String> {
 
     return commands;
 }
+
+pub fn get_command_by_name(command_name: String) -> Option<CommandEntity> {
+    let connection = db::create_connection();
+
+    let command_result = command::table
+        .filter(command::dsl::name.eq_all(command_name))
+        .first::<CommandEntity>(&connection)
+        .optional()
+        .unwrap();
+
+    return command_result;
+}
