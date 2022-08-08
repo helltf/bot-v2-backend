@@ -17,18 +17,16 @@ mod services;
 mod util;
 
 use cors::CORS;
-use rocket::serde::json::Json;
-use routes::commands::get_commands;
+use routes::commands::{get_command_names, get_commands};
 use routes::token::post_token;
-use serde::Deserialize;
-use services::{commands_service, token_service::save_token};
 
 #[options("/<_..>")]
 fn all_options() {}
 
 #[launch]
 fn rocket() -> _ {
-    rocket::build()
-        .attach(CORS)
-        .mount("/", routes![get_commands, post_token, all_options])
+    rocket::build().attach(CORS).mount(
+        "/",
+        routes![get_commands, post_token, all_options, get_command_names],
+    )
 }
