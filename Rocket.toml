@@ -1,7 +1,12 @@
-[production]
-address = "0.0.0.0"
-port = 8000
+[default]
+bind = "0.0.0.0"
+port = 8080
+env = ""
 
-[development]
-address = "localhost"
-port = 8200
+[debug]
+address = "0.0.0.0"
+port = 8080
+
+[release]
+address = "0.0.0.0"
+port = 8080
