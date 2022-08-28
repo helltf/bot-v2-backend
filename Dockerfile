@@ -4,7 +4,7 @@ ENV ROCKET_ENV=production
 
 COPY ./ ./
 
-RUN cargo run
+RUN cargo build --release
 
 CMD ["./target/debug/helltfbot-v2-backend"]
 
