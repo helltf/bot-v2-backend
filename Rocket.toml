@@ -1,12 +1,10 @@
 [default]
-bind = "0.0.0.0"
+address = "127.0.0.1"
 port = 8080
-env = ""
 
 [debug]
-address = "0.0.0.0"
-port = 8080
+port = 8100
 
 [release]
-address = "0.0.0.0"
 port = 8080
+address = "0.0.0.0"
