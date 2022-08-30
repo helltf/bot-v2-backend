@@ -1,6 +1,5 @@
 FROM rust:latest
 
-RUN rm -rf /usr/v2-backend
 WORKDIR /usr/v2-backend
 
 ENV ROCKET_ENV=production
@@ -10,4 +9,4 @@ COPY ./ ./
 
 RUN cargo build --release
 
-CMD ["./target/debug/helltfbot-v2-backend"]
+CMD ["./target/release/helltfbot-v2-backend"]

@@ -1,10 +1,16 @@
 [default]
-address = "127.0.0.1"
-port = 8080
+address = "0.0.0.0"
+port = 8000
+workers = 16
+max_blocking = 512
+keep_alive = 5
+ident = "Rocket"
+log_level = "normal"
+temp_dir = "/tmp"
+cli_colors = true
 
 [debug]
 port = 8100
 
 [release]
 port = 8080
-address = "0.0.0.0"
