@@ -1,5 +1,5 @@
 table! {
-    ban (id) {
+    bans (id) {
         id -> Int4,
         user -> Varchar,
         channel -> Varchar,
@@ -8,7 +8,7 @@ table! {
 }
 
 table! {
-    channel (id) {
+    channels (id) {
         id -> Int4,
         #[sql_name = "channel"]
         channel_name -> Varchar,
@@ -21,28 +21,29 @@ table! {
 }
 
 table! {
-    color_history (id) {
+    color_histories (id) {
         id -> Int4,
         history -> Array<Varchar>,
         change_timestamp -> Int8,
         register_timestamp -> Int8,
-        userId -> Nullable<Int4>,
+        #[sql_name = "userId"]
+        user_id -> Nullable<Int4>,
     }
 }
 
 table! {
-    command (name) {
+    commands (name) {
         name -> Varchar,
         counter -> Int4,
         permissions -> Int4,
         description -> Varchar,
+        cooldown -> Int4,
+        deleted -> Bool,
+        alias -> Nullable<Array<Varchar>>,
         #[sql_name = "requiredParams"]
         required_params -> Array<Text>,
         #[sql_name = "optionalParams"]
         optional_params -> Array<Text>,
-        cooldown -> Int4,
-        deleted -> Bool,
-        alias -> Nullable<Array<Varchar>>,
     }
 }
 
@@ -52,12 +53,13 @@ table! {
         incorrect_guesses -> Int4,
         letters_guessed -> Int4,
         emotes_guessed -> Int4,
-        userId -> Nullable<Int4>,
+        #[sql_name = "userId"]
+        user_id -> Nullable<Int4>,
     }
 }
 
 table! {
-    error (id) {
+    errors (id) {
         id -> Int4,
         message -> Nullable<Varchar>,
         stack_trace -> Nullable<Varchar>,
@@ -74,7 +76,16 @@ table! {
 }
 
 table! {
-    notification (id) {
+    notification_channels (id) {
+        id -> Int4,
+        name -> Varchar,
+        status -> Bool,
+        setting -> Bool,
+    }
+}
+
+table! {
+    notifications (id) {
         id -> Int4,
         streamer -> Varchar,
         channel -> Varchar,
@@ -88,26 +99,19 @@ table! {
 }
 
 table! {
-    notification_channel (id) {
+    suggestions (id) {
         id -> Int4,
-        name -> Varchar,
-        status -> Bool,
-        setting -> Bool,
-    }
-}
-
-table! {
-    suggestion (id) {
-        id -> Int4,
-        #[sql_name = "suggestion"]
-        suggestion_info -> Varchar,
+        suggestion -> Varchar,
         date -> Int8,
-        userId -> Nullable<Int4>,
+        #[sql_name = "userId"]
+        user_id -> Nullable<Int4>,
+        status -> Varchar,
+        reason -> Nullable<Varchar>,
     }
 }
 
 table! {
-    timeout (id) {
+    timeouts (id) {
         id -> Int4,
         user -> Varchar,
         channel -> Varchar,
@@ -117,7 +121,18 @@ table! {
 }
 
 table! {
-    user (id) {
+    twitch_tokens (id) {
+        id -> Int4,
+        token -> Bytea,
+        nonce -> Bytea,
+        refresh_token -> Varchar,
+        #[sql_name = "userId"]
+        user_id -> Nullable<Int4>,
+    }
+}
+
+table! {
+    users (id) {
         id -> Int4,
         name -> Varchar,
         color -> Nullable<Varchar>,
@@ -134,36 +149,25 @@ table! {
     }
 }
 
-table! {
-    twitch_tokens (id) {
-        id -> Int4,
-        nonce -> Bytea,
-        token -> Bytea,
-        refresh_token -> Varchar,
-        #[sql_name = "userId"]
-        user_id -> Nullable<Int4>,
-    }
-}
-
-joinable!(color_history -> user (userId));
-joinable!(emotegame_stats -> user (userId));
-joinable!(notification -> user (user_id));
-joinable!(suggestion -> user (userId));
-joinable!(twitch_tokens -> user (user_id));
+joinable!(color_histories -> users (user_id));
+joinable!(emotegame_stats -> users (user_id));
+joinable!(notifications -> users (user_id));
+joinable!(suggestions -> users (user_id));
+joinable!(twitch_tokens -> users (user_id));
 
 allow_tables_to_appear_in_same_query!(
-    ban,
-    channel,
-    color_history,
-    command,
+    bans,
+    channels,
+    color_histories,
+    commands,
     emotegame_stats,
-    error,
+    errors,
     migrations,
-    notification,
-    notification_channel,
-    suggestion,
-    timeout,
+    notification_channels,
+    notifications,
+    suggestions,
+    timeouts,
     twitch_tokens,
-    user,
+    users,
     wordle_words,
 );

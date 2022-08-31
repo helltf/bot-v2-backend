@@ -1,7 +1,16 @@
-[production]
+[default]
 address = "0.0.0.0"
 port = 8000
+workers = 16
+max_blocking = 512
+keep_alive = 5
+ident = "Rocket"
+log_level = "normal"
+temp_dir = "/tmp"
+cli_colors = true
 
-[development]
-address = "localhost"
-port = 8200
+[debug]
+port = 8100
+
+[release]
+port = 8080
