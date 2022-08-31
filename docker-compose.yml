@@ -1,0 +1,18 @@
+version: '3.9'
+
+networks:
+  helltfbot-v2_default:
+    external: true
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - '8080:8008'
+    environment:
+      - ROCKET_ENV=production
+    networks:
+      - helltfbot-v2_default
