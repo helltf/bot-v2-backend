@@ -13,6 +13,4 @@ COPY diesel.toml .
 RUN cargo build --release
 EXPOSE 8080
 
-ENV DATABASE_URL=postgresql://postgres:1234@helltfbot-v2_db_1:5432/twitch
-
 CMD ["./target/release/helltfbot-v2-backend"]
