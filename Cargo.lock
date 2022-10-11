@@ -545,6 +545,7 @@ dependencies = [
  "rocket",
  "serde",
  "serde_json",
+ "serde_urlencoded",
  "sodiumoxide",
 ]
 

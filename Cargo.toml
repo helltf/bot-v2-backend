@@ -14,3 +14,4 @@ dotenv = "0.15.0"
 diesel_migrations = "1.4.0"
 reqwest = { version = "0.11", features = ["json"] }
 sodiumoxide = "0.2.7"
+serde_urlencoded = "0.7"
