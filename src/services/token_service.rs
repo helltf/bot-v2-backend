@@ -1,27 +1,32 @@
+use crate::api::twitch::TokenData;
+use crate::db;
 use crate::schema::twitch_tokens::dsl::*;
 use crate::util::utils::bytes_to_vec;
-use crate::{db, models::TwitchTokenEntity};
 use diesel::prelude::*;
-use dotenv;
 use sodiumoxide::crypto::secretbox;
 use sodiumoxide::crypto::secretbox::xsalsa20poly1305::Key;
 use sodiumoxide::crypto::secretbox::Nonce;
 use std::env;
 
-pub fn save_token(access_token: String, save_refresh_token: String, twitch_id: String) -> () {
+pub fn save_token(token_data: TokenData, twitch_id: String) -> Option<diesel::result::Error> {
     let connection = db::create_connection();
     let box_nonce = secretbox::gen_nonce();
 
-    let boxed_at = encrypt_token(access_token, &box_nonce);
+    let boxed_at = encrypt_token(token_data.access_token.to_owned(), &box_nonce);
 
     let result = diesel::insert_into(twitch_tokens)
         .values((
             token.eq_all(boxed_at),
             user_id.eq_all(twitch_id.parse::<i32>().unwrap()),
             nonce.eq_all(bytes_to_vec(&box_nonce.0)),
-            refresh_token.eq_all(save_refresh_token),
+            refresh_token.eq_all(token_data.refresh_token),
         ))
         .execute(&connection);
+
+    return match result {
+        Ok(_) => None,
+        Err(error) => Some(error),
+    };
 }
 
 fn encrypt_token(enc_token: String, box_nonce: &Nonce) -> Vec<u8> {

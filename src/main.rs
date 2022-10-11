@@ -17,6 +17,7 @@ mod services;
 mod util;
 
 use cors::CORS;
+use dotenv::dotenv;
 use routes::commands::{get_command_by_name, get_command_names, get_commands};
 use routes::token::post_token;
 
@@ -25,6 +26,8 @@ fn all_options() {}
 
 #[launch]
 fn rocket() -> _ {
+    dotenv().ok();
+
     rocket::build().attach(CORS).mount(
         "/",
         routes![
