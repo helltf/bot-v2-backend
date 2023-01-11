@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 networks:
   helltfbot-v2_default:
@@ -11,7 +11,7 @@ services:
       dockerfile: Dockerfile
     restart: always
     ports:
-      - '8080:8008'
+      - "8080:8080"
     environment:
       - ROCKET_ENV=production
     networks:
