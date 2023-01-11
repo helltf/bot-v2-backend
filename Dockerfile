@@ -9,6 +9,7 @@ COPY Cargo.lock .
 COPY Cargo.toml .
 COPY Rocket.toml .
 COPY diesel.toml .
+COPY .env .
 
 RUN cargo build --release
 EXPOSE 8080
